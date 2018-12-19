@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express')
 const request = require('request')
 const querystring = require('querystring')
@@ -9,23 +11,19 @@ const redirect_uri =
   'http://localhost:8888/callback'
 
 app.get('/login', (req, res) => {
-  // console.log('req from /login: ', req);
   console.log('res from /login: ', res);
 
   const querystrings = querystring.stringify({
     response_type: 'code',
-    client_id: process.env.REACT_APP_SPOTIFY_CLIENT_ID,
+    client_id: process.env.SPOTIFY_CLIENT_ID,
     scope: 'user-read-private user-read-email',
     redirect_uri
   })
-
-  console.log('querystrings', querystrings);
 
   res.redirect(`https://accounts.spotify.com/authorize?${querystrings}`)
 })
 
 app.get('/callback', (req, res) => {
-  // console.log('req /callback', req);
   console.log('res /callback', res);
   const code = req.query.code || null
   const authOptions = {
@@ -37,8 +35,8 @@ app.get('/callback', (req, res) => {
     },
     headers: {
       'Authorization': 'Basic ' + (new Buffer(
-        process.env.REACT_APP_SPOTIFY_CLIENT_ID + ':' +
-        process.env.REACT_APP_SPOTIFY_CLIENT_SECRET
+        process.env.SPOTIFY_CLIENT_ID + ':' +
+        process.env.SPOTIFY_CLIENT_SECRET
       ).toString('base64'))
     },
     json: true
@@ -48,7 +46,7 @@ app.get('/callback', (req, res) => {
     var access_token = body.access_token
     const uri = process.env.FRONTEND_URI || 'http://localhost:3000'
 
-    res.redirect(uri + querystring({ access_token }))
+    res.redirect(uri + querystring.stringify({ access_token }))
   })
 })
 
