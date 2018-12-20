@@ -6,25 +6,38 @@ const querystring = require('querystring')
 
 const app = express()
 
+const SCOPES = [
+  'user-read-private',
+  'user-read-email',
+  'playlist-read-private',
+  'playlist-read-collaborative',
+  'user-top-read',
+  'user-read-recently-played',
+  'user-library-read',
+]
+
 const redirect_uri =
   process.env.REDIRECT_URI ||
   'http://localhost:8888/callback'
 
 app.get('/login', (req, res) => {
-  console.log('res from /login: ', res);
+  console.log('login');
+  // console.log('res from /login: ', res);
 
   const querystrings = querystring.stringify({
     response_type: 'code',
     client_id: process.env.SPOTIFY_CLIENT_ID,
-    scope: 'user-read-private user-read-email',
+    scope: SCOPES.join(' '),
     redirect_uri
   })
+  console.log('querystrings', querystrings);
 
   res.redirect(`https://accounts.spotify.com/authorize?${querystrings}`)
 })
 
 app.get('/callback', (req, res) => {
-  console.log('res /callback', res);
+  console.log('/callback');
+  // console.log('res /callback', res);
   const code = req.query.code || null
   const authOptions = {
     url: 'https://accounts.spotify.com/api/token',
@@ -43,10 +56,14 @@ app.get('/callback', (req, res) => {
   }
 
   request.post(authOptions, (error, response, body) => {
+    // console.log('authOptions', authOptions);
+    console.log('body', body);
     var access_token = body.access_token
+    console.log('access_token', access_token);
     const uri = process.env.FRONTEND_URI || 'http://localhost:3000'
 
-    res.redirect(uri + querystring.stringify({ access_token }))
+    console.log('uri + querystring.stringify({ access_token })', uri + querystring.stringify({ access_token }));
+    res.redirect(uri + '?' + querystring.stringify({ access_token }))
   })
 })
 
