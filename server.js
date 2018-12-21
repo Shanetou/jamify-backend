@@ -11,9 +11,12 @@ const SCOPES = [
   'user-read-email',
   'playlist-read-private',
   'playlist-read-collaborative',
+  'playlist-modify-public',
+  'playlist-modify-private',
   'user-top-read',
   'user-read-recently-played',
   'user-library-read',
+  'user-read-birthdate',
 ]
 
 const redirect_uri =
