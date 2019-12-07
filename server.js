@@ -23,6 +23,8 @@ const SCOPES = [
 const redirect_uri =
 	process.env.REDIRECT_URI || 'http://localhost:8888/callback';
 
+console.log('process.env', process.env);
+
 app.get('/login', (_req, res) => {
 	const querystrings = querystring.stringify({
 		response_type: 'code',
@@ -30,6 +32,7 @@ app.get('/login', (_req, res) => {
 		scope: SCOPES.join(' '),
 		redirect_uri,
 	});
+	console.log('querystrings', querystrings);
 
 	res.redirect(`https://accounts.spotify.com/authorize?${querystrings}`);
 });
@@ -54,11 +57,13 @@ app.get('/callback', (req, res) => {
 		},
 		json: true,
 	};
+	console.log('authOptions', authOptions);
 
 	request.post(authOptions, (_error, _response, body) => {
 		var access_token = body.access_token;
 		const uri = process.env.FRONTEND_URI || 'http://localhost:3000';
 
+		console.log('access_token', access_token);
 		res.redirect(uri + '?' + querystring.stringify({ access_token }));
 	});
 });
