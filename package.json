@@ -1,8 +1,8 @@
 {
-  "name": "spotify-bpm-backend",
+  "name": "jamify-backend",
   "version": "1.0.0",
   "main": "server.js",
-  "repository": "git@github.com:Shanetou/spotify-bpm-backend.git",
+  "repository": "git@github.com:Shanetou/jamify-backend.git",
   "author": "Shane McQuerter <shanemcquerter@gmail.com>",
   "license": "MIT",
   "scripts": {
