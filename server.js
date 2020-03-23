@@ -36,6 +36,7 @@ app.get("/login", (_req, res) => {
 
 app.get("/callback", (req, res) => {
   const code = req.query.code || null;
+
   const authOptions = {
     url: "https://accounts.spotify.com/api/token",
     form: {
