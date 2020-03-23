@@ -64,7 +64,9 @@ app.get("/callback", (req, res) => {
 });
 
 const port = process.env.PORT || 8888;
+
 console.log(
   `Listening on port ${port}. Go to /login to initiate authentication flow.`
 );
+
 app.listen(port);
